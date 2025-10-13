@@ -119,6 +119,8 @@ inline audi::taylor_model pow(const audi::taylor_model &tm, int n)
 
     if (n == 0) {
         return audi::taylor_model::identity(tm.get_rem(), tm.get_exp(), tm.get_dom());
+    } else if (n == 1) {
+        return tm;
     }
 
     audi::taylor_model product;
@@ -144,14 +146,14 @@ inline audi::taylor_model pow(const audi::taylor_model &tm, int n)
  * The remainder for the square root is:
  *
  * \f[
- * R = (-1)^k \sqrt(f_0) \cdot \frac{(2k - 1)!}{(k + 1)!2^{k+1}} \frac{\hat{f}^{k+1}}{f_0^{k+1}}
+ * R = (-1)^k \sqrt{f_0} \cdot \frac{(2k - 1)!}{(k + 1)!2^{k+1}} \frac{\hat{f}^{k+1}}{f_0^{k+1}}
  * \frac{1}{(1 + \theta \cdot \frac{\hat{f}}{f_0})^{k + \frac{1}{2}}}
  * \f]
  *
  * And for the inverse square root:
  *
  * \f[
- * R = (-1)^{k+1} \frac{1}{\sqrt(f_0)} \cdot \frac{(2k + 1)!!}{(k + 1)!2^{k+1}} \frac{\hat{f}^{k+1}}{f_0^{k+1}}
+ * R = (-1)^{k+1} \frac{1}{\sqrt{f_0}} \cdot \frac{(2k + 1)!!}{(k + 1)!2^{k+1}} \frac{\hat{f}^{k+1}}{f_0^{k+1}}
  * \frac{1}{(1 + \theta \cdot \frac{\hat{f}}{f_0})^{k + \frac{3}{2}}}
  * \f]
  *
@@ -205,8 +207,10 @@ inline audi::taylor_model pow(const audi::taylor_model &tm, T n)
                           / boost::math::factorial<double>(k + 1) * std::pow(2, k + 1)
                           * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1)) / std::pow(const_term, static_cast<int>(k + 1))
                           * int_d(1.0) / k_half_denominator;
-    } else if (n - std::round(n) < std::numeric_limits<T>::epsilon() * 10) {
+    } else if (std::abs(n - std::round(n)) < std::numeric_limits<T>::epsilon() * 10) {
         return audi::pow(tm, static_cast<int>(n));
+    } else if (std::abs(n * 2.0 - std::round(n * 2.0)) < std::numeric_limits<T>::epsilon() * 10) {
+        return audi::pow(audi::pow(tm, static_cast<int>(n * 2.0)), 1.0 / 2.0);
     } else {
         throw std::runtime_error("This exponent is not implemented for Taylor model arithmetic.");
     }
@@ -223,14 +227,14 @@ inline audi::taylor_model pow(const audi::taylor_model &tm, T n)
  * audi::exp(const gdual<T, M> &d). The remainder term is represented as follows:
  *
  * \f[
- * R = \exp(f_0) \frac{\hat{f}^{k+1}}{(k+1)!} \exp(\theta \cdot \hat{f})
+ * R = \text{exp}(f_0) \frac{\hat{f}^{k+1}}{(k+1)!} \text{exp}(\theta \cdot \hat{f})
  * \f]
  * for any \f$ x \in [\vec{a}, \vec{b}] \text{, } \hat{f} \in B(\hat{f}) \text{, and } 0 < \theta <
  * 1 \f$.
  *
  * @param tm the taylor_model whose exponential is to be computed
  *
- * @return a new taylor_model representing \f$ exp(tm) \f$
+ * @return a new taylor_model representing \f$ \text{exp}(tm) \f$
  */
 inline audi::taylor_model exp(const audi::taylor_model &tm)
 {
@@ -263,7 +267,7 @@ inline audi::taylor_model exp(const audi::taylor_model &tm)
  *
  * @param tm the taylor_model base
  *
- * @return a new taylor_model representing \f$log(tm)\f$
+ * @return a new taylor_model representing \f$\text{log}(tm)\f$
  */
 inline audi::taylor_model log(const audi::taylor_model &tm)
 {
@@ -291,7 +295,7 @@ inline audi::taylor_model log(const audi::taylor_model &tm)
  *
  * @param tm the taylor_model base
  *
- * @return a new taylor_model representing \f$sqrt(tm)\f$
+ * @return a new taylor_model representing \f$\sqrt{tm}\f$
  */
 inline audi::taylor_model sqrt(const audi::taylor_model &tm)
 {
@@ -330,7 +334,7 @@ inline audi::taylor_model sqrt(const audi::taylor_model &tm)
  *
  * @param tm the taylor_model base
  *
- * @return a new taylor_model representing \f$sin(tm)\f$
+ * @return a new taylor_model representing \f$\sin(tm)\f$
  */
 inline audi::taylor_model sin(const audi::taylor_model &tm)
 {
@@ -393,7 +397,7 @@ inline audi::taylor_model sin(const audi::taylor_model &tm)
  *
  * @param tm the taylor_model base
  *
- * @return a new taylor_model representing \f$cos(tm)\f$
+ * @return a new taylor_model representing \f$\cos(tm)\f$
  */
 inline audi::taylor_model cos(const audi::taylor_model &tm)
 {
@@ -431,7 +435,7 @@ inline audi::taylor_model cos(const audi::taylor_model &tm)
  *
  * @param tm the taylor_model base
  *
- * @return an array of two new taylor_models representing \f${sin(tm), cos(tm)}\f$
+ * @return an array of two new taylor_models representing \f${\sin(tm), \cos(tm)}\f$
  */
 inline std::array<audi::taylor_model, 2> sin_and_cos(const audi::taylor_model &tm)
 {
@@ -485,7 +489,7 @@ inline std::array<audi::taylor_model, 2> sin_and_cos(const audi::taylor_model &t
  *
  * @param tm the taylor_model base
  *
- * @return an array of two new taylor_models representing \f$tan(tm)\f$
+ * @return an array of two new taylor_models representing \f$\tan(tm)\f$
  */
 inline audi::taylor_model tan(const audi::taylor_model &tm)
 {
@@ -514,7 +518,7 @@ inline audi::taylor_model tan(const audi::taylor_model &tm)
  *
  * @param tm the taylor_model base
  *
- * @return a new taylor_model representing \f$sinh(tm)\f$
+ * @return a new taylor_model representing \f$\sinh(tm)\f$
  */
 inline audi::taylor_model sinh(const audi::taylor_model &tm)
 {
@@ -560,7 +564,7 @@ inline audi::taylor_model sinh(const audi::taylor_model &tm)
  *
  * @param tm the taylor_model base
  *
- * @return a new taylor_model representing \f$cosh(tm)\f$
+ * @return a new taylor_model representing \f$\cosh(tm)\f$
  */
 inline audi::taylor_model cosh(const audi::taylor_model &tm)
 {
@@ -592,7 +596,7 @@ inline audi::taylor_model cosh(const audi::taylor_model &tm)
  *
  * @param tm the taylor_model base
  *
- * @return an array of two new taylor_models representing \f${sinh(tm), cosh(tm)}\f$
+ * @return an array of two new taylor_models representing \f${\sinh(tm), \cosh(tm)}\f$
  */
 inline std::array<audi::taylor_model, 2> sinh_and_cosh(const audi::taylor_model &tm)
 {
@@ -632,7 +636,7 @@ inline std::array<audi::taylor_model, 2> sinh_and_cosh(const audi::taylor_model 
  *
  * @param tm the taylor_model base
  *
- * @return an array of two new taylor_models representing \f$tanh(tm)\f$
+ * @return an array of two new taylor_models representing \f$\tanh(tm)\f$
  */
 inline audi::taylor_model tanh(const audi::taylor_model &tm)
 {
@@ -716,7 +720,7 @@ int_d asin_derivative(int_d a, unsigned int order)
  *
  * @param tm the taylor_model base
  *
- * @return a new taylor_model representing \f$asin(tm)\f$
+ * @return a new taylor_model representing \f$\arcsin(tm)\f$
  */
 inline audi::taylor_model asin(const audi::taylor_model &tm)
 {
@@ -752,7 +756,7 @@ inline audi::taylor_model asin(const audi::taylor_model &tm)
  *
  * @param tm the taylor_model base
  *
- * @return a new taylor_model representing \f$acos(tm)\f$
+ * @return a new taylor_model representing \f$\arccos(tm)\f$
  */
 inline audi::taylor_model acos(const audi::taylor_model &tm)
 {
@@ -778,7 +782,7 @@ inline audi::taylor_model acos(const audi::taylor_model &tm)
  *
  * @param tm the taylor_model base
  *
- * @return a new taylor_model representing \f$atan(tm)\f$
+ * @return a new taylor_model representing \f$\arctan(tm)\f$
  */
 inline audi::taylor_model atan(const audi::taylor_model &tm)
 {
@@ -808,14 +812,14 @@ inline audi::taylor_model atan(const audi::taylor_model &tm)
  *
  * Here, the following identity is used:
  *
- * \f$ arcsinh(f) = \log(f + \sqrt(f^2 + 1)) \f$
+ * \f$ \text{arcsinh}(f) = \text{log}(f + \sqrt{f^2 + 1}) \f$
  *
  * For the remainder, see log(const audi::taylor_model &tm), sqrt(const audi::taylor_model &tm), and pow(const
  * audi::taylor_model &tm).
  *
  * @param tm the taylor_model base
  *
- * @return a new taylor_model representing \f$arcsinh(tm)\f$
+ * @return a new taylor_model representing \f$\text{arcsinh}(tm)\f$
  */
 inline audi::taylor_model asinh(const audi::taylor_model &tm)
 {
@@ -828,7 +832,7 @@ inline audi::taylor_model asinh(const audi::taylor_model &tm)
  *
  * Here, the following identity is used:
  *
- * \f$ arccosh(f) = \log(f + \sqrt(f^2 - 1)) \f$
+ * \f$ \text{arccosh}(f) = \text{log}(f + \sqrt{f^2 - 1}) \f$
  *
  * where \f$ B(f) + I_f \subset (1, \infty) \f$ to prevent complex values from the sqrt.
  *
@@ -837,7 +841,7 @@ inline audi::taylor_model asinh(const audi::taylor_model &tm)
  *
  * @param tm the taylor_model base
  *
- * @return a new taylor_model representing \f$arccosh(tm)\f$
+ * @return a new taylor_model representing \f$\text{arccosh}(tm)\f$
  */
 inline audi::taylor_model acosh(const audi::taylor_model &tm)
 {
@@ -857,13 +861,13 @@ inline audi::taylor_model acosh(const audi::taylor_model &tm)
  *
  * Here, the following identity is used:
  *
- * \f$ arctanh(f) = \frac{1}{2} \cdot \log(\frac{1 + f}{1 - f}) \f$
+ * \f$ \text{arctanh}(f) = \frac{1}{2} \cdot \text{log}(\frac{1 + f}{1 - f}) \f$
  *
  * For the remainder, see log(const audi::taylor_model &tm).
  *
  * @param tm the taylor_model base
  *
- * @return a new taylor_model representing \f$arctanh(tm)\f$
+ * @return a new taylor_model representing \f$\text{arctanh}(tm)\f$
  */
 inline audi::taylor_model atanh(const audi::taylor_model &tm)
 {
@@ -878,7 +882,7 @@ inline audi::taylor_model atanh(const audi::taylor_model &tm)
  *
  * @param tm the taylor_model base
  *
- * @return a new taylor_model representing \f$abs(tm)\f$
+ * @return a new taylor_model representing \f$\text{abs}(tm)\f$
  */
 inline audi::taylor_model abs(const audi::taylor_model &tm)
 {
