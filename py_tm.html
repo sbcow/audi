@@ -66,8 +66,9 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Basic Python Tutorials:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/example00.html">The very basics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/example01.html">Understanding gduals and floats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/very_basics.html">The very basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/understanding_gduals.html">Understanding gduals and floats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/understanding_tms.html">Understanding Taylor models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/vectorized_double.html">Using vectorized doubles</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Advanced Python Tutorials:</span></p>
@@ -135,8 +136,7 @@ representing the Taylor polynomial (generalized dual number) part of the Taylor 
 quantitative estimate of the error that is to be expected when approximating a function by its Taylor polynomial.
 Furthermore it even offers a way to obtain bounds for the error in practice based on bounding the <span class="math notranslate nohighlight">\((n+1)\)</span> th
 derivative a method that has sometimes been employed in interval calculations.</p>
-<p>As a result, you get <span class="math notranslate nohighlight">\(\forall \vec{x} \in [\vec{a}, \vec{b}]\)</span> , a given order  <span class="math notranslate nohighlight">\(n\)</span> , and an expansion
-point <span class="math notranslate nohighlight">\(\vec{x_o}\)</span>:</p>
+<p>As a result, you get <span class="math notranslate nohighlight">\(\forall \vec{x} \in [\vec{a}, \vec{b}]\)</span>, a given order  <span class="math notranslate nohighlight">\(n\)</span>, and an expansion point <span class="math notranslate nohighlight">\(\vec{x_o}\)</span>:</p>
 <p><span class="math notranslate nohighlight">\(f(\vec{x}) \in P_{\alpha, f}(\vec{x} - \vec{x_0}) + I_{\alpha, f}\)</span></p>
 <p>where f is the function you’re creating a Taylor model for, P is the Taylor polynomial, and I is
 the interval remainder.</p>
