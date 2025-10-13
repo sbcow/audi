@@ -119,6 +119,8 @@ inline audi::taylor_model pow(const audi::taylor_model &tm, int n)
 
     if (n == 0) {
         return audi::taylor_model::identity(tm.get_rem(), tm.get_exp(), tm.get_dom());
+    } else if (n == 1) {
+        return tm;
     }
 
     audi::taylor_model product;
@@ -205,8 +207,10 @@ inline audi::taylor_model pow(const audi::taylor_model &tm, T n)
                           / boost::math::factorial<double>(k + 1) * std::pow(2, k + 1)
                           * boost::numeric::pow(f_bar_remainder_bounds, static_cast<int>(k + 1)) / std::pow(const_term, static_cast<int>(k + 1))
                           * int_d(1.0) / k_half_denominator;
-    } else if (n - std::round(n) < std::numeric_limits<T>::epsilon() * 10) {
+    } else if (std::abs(n - std::round(n)) < std::numeric_limits<T>::epsilon() * 10) {
         return audi::pow(tm, static_cast<int>(n));
+    } else if (std::abs(n * 2.0 - std::round(n * 2.0)) < std::numeric_limits<T>::epsilon() * 10) {
+        return audi::pow(audi::pow(tm, static_cast<int>(n * 2.0)), 1.0 / 2.0);
     } else {
         throw std::runtime_error("This exponent is not implemented for Taylor model arithmetic.");
     }

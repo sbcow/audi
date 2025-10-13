@@ -55,10 +55,11 @@ BOOST_AUTO_TEST_CASE(exponentiation)
         audi::gdual<double> f_xy = x * x * y + x * y * x * x * x - 3 * y * y * y * y * x * y * x + 3.2;
         audi::taylor_model tm_xy(f_xy, rem, exp, dom);
 
+        BOOST_CHECK_EQUAL(audi::pow(tm_xy, 0), audi::taylor_model::identity(tm_xy.get_rem(), tm_xy.get_exp(), tm_xy.get_dom())); // calls pow(audi::gdual<double>, int)
+        BOOST_CHECK_EQUAL(audi::pow(tm_xy, 1), tm_xy); // calls pow(audi::gdual<double>, int)
         BOOST_CHECK_EQUAL(audi::pow(tm_xy, 3), tm_xy * tm_xy * tm_xy); // calls pow(audi::gdual<double>, int)
-        BOOST_CHECK_EQUAL(audi::pow(tm_xy, 3.),
-                          tm_xy * tm_xy
-                              * tm_xy); // calls pow(audi::gdual<double>, double) (with a positive integer exponent)
+        BOOST_CHECK_EQUAL(audi::pow(tm_xy, 3.), tm_xy * tm_xy * tm_xy); // calls pow(audi::gdual<double>, double) (with a positive integer exponent)
+        BOOST_CHECK_EQUAL(audi::pow(tm_xy, 3./2.), audi::pow(tm_xy * tm_xy * tm_xy, 1.0/2.0));
     }
 
     {
