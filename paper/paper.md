@@ -27,47 +27,46 @@ bibliography: paper.bib
 
 <!-- A summary describing the high-level functionality and purpose of the software for a diverse, non-specialist audience. -->
 
-`pyaudi` is an open-source Python toolbox developed at the [European Space Agency](https://www.esa.int) that provides high-order, forward-mode automatic differentiation in a multivariate setting. The toolbox is built on C++ class templates, exposed to Python via pybind11, and, at its core, implements the algebra of truncated Taylor polynomials. This design allows the underlying generalized dual number type to act as a seamless drop-in replacement for scalar types such as floats, while operator overloading ensures that derivatives are propagated automatically. The C++ code base `audi` can also be used directly and allows for greater flexibility in the instantiation of the algebra over different fields.
+`pyaudi` is an open-source Python toolbox developed at the [European Space Agency](https://www.esa.int) that provides high-order forward-mode automatic differentiation in
+a multivariate setting. Built on C++ class templates and exposed to Python via pybind11, it implements the algebra of truncated Taylor polynomials. This design allows its
+generalized dual number type to serve as a drop-in replacement for scalar types like floats, with operator overloading ensuring automatic derivative propagation. The
+underlying C++ codebase `audi` can also be used directly, offering greater flexibility for instantiating the algebra over different fields.
 
-All standard mathematical operations are supported, leveraging the nilpotency of exponentiation in the algebra of truncated Taylor polynomials. In essence, within a truncated algebra $\mathcal A^n$, any polynomial $p \in \mathcal A^n$ with vanishing constant term evaluates to zero when raised to a power greater than the truncation order ($m > n$). This property enables efficient and exact computation of derivatives to arbitrary order while maintaining the simplicity of standard numerical code.
+All standard mathematical operations are supported, leveraging the nilpotency of exponentiation in truncated Taylor polynomial algebra. Within a truncated algebra $\mathcal A^n$,
+any polynomial $p \in \mathcal A^n$ with vanishing constant term evaluates to zero when raised to a power greater than the truncation order ($m > n$). This property enables efficient and exact
+computation of derivatives to arbitrary order while preserving the simplicity of standard numerical code.
 
-On top of the algebra of truncated Taylor polynomials, `pyaudi` also offers an implementation of Taylor models [@makino1998rigorous], which combines truncated Taylor
-polynomials with an interval bounding their truncation error as well as a number of miscellaneous algorithms useful for applications in differential intelligence,
-high-order automatic differentiation, verified integration and more.
+Beyond truncated Taylor polynomials, `pyaudi` also implements Taylor models [@makino1998rigorous], which combine these polynomials with an interval bounding their truncation error,
+along with miscellaneous algorithms for applications in differential intelligence, high-order automatic differentiation, verified integration, and related fields.
 
 
 # Statement of need
 
 <!-- A Statement of need section that clearly illustrates the research purpose of the software and places it in the context of related work. -->
-`pyaudi` enables users to compute and manipulate order-$n$ Taylor expansions of generic computational
-graphs, while also providing rigorous bounds on the truncation error through their associated Taylor models. 
-These Taylor representations of program outputs can be exploited in a variety of ways, including fast Monte Carlo 
-simulations, rigorous uncertainty analysis, local inversion of output–input relations, and high-order 
-sensitivity studies. The package implements the high-order automatic differentiation methodology originally 
-developed by Berz and Makino ([@berz2014introduction], [@makino1998rigorous]), while introducing 
-novel implementation details in polynomial multiplication routines and in the bounding 
-of Taylor models.
+
+`pyaudi` enables users to compute and manipulate order-$n$ Taylor expansions of generic computational graphs, while
+providing rigorous bounds on truncation errors through associated Taylor models. These Taylor representations of program
+outputs can be used for fast Monte Carlo simulations, rigorous uncertainty analysis, local inversion of output–input
+relations, and high-order sensitivity studies. The package implements the high-order automatic differentiation methodology
+of Berz and Makino ([@berz2014introduction], [@makino1998rigorous]), introducing novel implementation details in polynomial
+multiplication routines and Taylor model bounding.
 
 # Existing libraries with similar capabilities
 
-As of the time of writing, there are two main open source libraries that allow to perform similar computations
-to those allowed by `pyaudi`. The first one is the C/C++ library DACE [@massari2018differential] implementing the
-full differential algebra of truncated Taylor polynomials with float coefficients. Unlike `pyaudi`, DACE relies on
-a polynomial multiplication routine that makes extensive use of memory for the storage 
-of monomial coefficients. As discussed in the comparison reported below, this approach gives DACE an advantage 
-for single evaluations at lower orders, with the benefit diminishing as computations are performed in batches and at high orders.
+At the time of writing, two main open-source libraries perform computations similar to those in `pyaudi`. The first is the C/C++ library DACE
+[@massari2018differential], which implements the full differential algebra of truncated Taylor polynomials with float coefficients. Unlike `pyaudi`,
+DACE uses a memory-intensive polynomial multiplication routine for storing monomial coefficients. As shown in the separate paper_results.md file 
+(in the paper directory of the paper branch of the repository), this gives DACE an advantage for single evaluations at low orders, though the benefit
+decreases for batched computations and higher orders.
 
-A second relevant project are the Julia libraries TaylorSeries.jl and TaylorModels.jl [@benet2019taylormodels] providing implementations 
-of Taylor models to compute rigorous bounds on generic Taylor series. However, their underlying approach differs 
-substantially from that of `pyaudi`, and preliminary comparisons presented here indicate that `pyaudi` can 
-significantly outperform these libraries in the practical cases tested.
+The second project comprises the Julia libraries TaylorSeries.jl and TaylorModels.jl [@benet2019taylormodels], which implement Taylor models to compute
+rigorous bounds on Taylor series. Their approach, however, differs substantially from `pyaudi`, and preliminary results — also presented in the separate
+paper_results.md file — indicate that `pyaudi` significantly outperforms them in the tested cases.
 
-In the field of machine learning, in recent years a plethora of automatic differentiation toolboxes have risen tailored
-at the efficient execution of machine learning tasks and optimization in general. JAX [@jax2018github], TensorFlow [@tensorflow2015-whitepaper], PyTorch [@paszke2019pytorch] (autograd)
-are perhaps the most widely adopted. For low order derivatives (first and second order only) these are very efficient and should be used
-as they implement efficiently reverse mode automatic differentiation which for these tasks is often superior. For higher order derivatives, 
-instead, most implementation suffer greatly and, although some experimental features start to be available (see JAX's jet feature [@bettencourt2019taylor]),
-they are still not mature enough.
+In recent years, numerous automatic differentiation toolboxes have emerged for machine learning and optimization, notably JAX [@jax2018github], TensorFlow
+[@tensorflow2015-whitepaper], and PyTorch [@paszke2019pytorch] (autograd). These excel at low-order derivatives (first and second), where reverse-mode
+differentiation is highly efficient. For higher-order derivatives, however, most implementations perform poorly; while experimental features such as JAX’s
+jet module [@bettencourt2019taylor] show promise, they remain immature.
 
 ## Key aspects
 
@@ -88,10 +87,6 @@ The main features of `pyaudi` are:
   
 - **Map inversion algorithm**, implementing the method described in [@berz2014introduction]. 
   This feature enables the local inversion of input–output relations arising in generic computational graphs.
-
-A performance comparison was conducted against DACE for gduals, and against TaylorModels.jl for
-Taylor models, of which the results can be found in paper_results.md on the paper branch.
-
 
 # Ongoing research
 
