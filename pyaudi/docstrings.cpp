@@ -110,8 +110,7 @@ quantitative estimate of the error that is to be expected when approximating a f
 Furthermore it even offers a way to obtain bounds for the error in practice based on bounding the :math:`(n+1)` th 
 derivative a method that has sometimes been employed in interval calculations.
                                                                                                                    
-As a result, you get :math:`\forall \vec{x} \in [\vec{a}, \vec{b}]` , a given order  :math:`n` , and an expansion
-point :math:`\vec{x_o}`:
+As a result, you get :math:`\forall \vec{x} \in [\vec{a}, \vec{b}]`, a given order  :math:`n`, and an expansion point :math:`\vec{x_o}`:
                                                                                                                  
 :math:`f(\vec{x}) \in P_{\alpha, f}(\vec{x} - \vec{x_0}) + I_{\alpha, f}`
                                                                                                                    

@@ -57,15 +57,30 @@ namespace audi
  * Furthermore it even offers a way to obtain bounds for the error in practice based on bounding the \f$(n+1)\f$st
  * derivative a method that has sometimes been employed in interval calculations.
  *
- * As a result, you get \f$ \forall \vec{x} \in [\vec{a}, \vec{b}] \text{, a given order } n \text{, and an expansion
- * point} \vec{x_o} \f$:
+ * As a result, you get \f$ \forall \vec{x} \in [\vec{a}, \vec{b}]\f$, a given order  \f$n\f$, and an expansion point \f$\vec{x_o} \f$:
  *
  * \f$ f(\vec{x}) \in P_{\alpha, f}(\vec{x} - \vec{x_0}) + I_{\alpha, f} \f$
  *
  * where f is the function you're creating a Taylor model for, P is the Taylor polynomial, and I is
  * the interval remainder.
  *
+ * A basic example of instantiating a Taylor model would be:
+ * 
+ * @code
+ * unsigned int order = 3;
+ * boost::numeric::interval<double> rem(0.0, 0.0);
+ * std::unordered_map<std::string, double> exp = {{"x", 0.0}, {"y", 0.0}};
+ * double domain_size = 0.2;
+ * std::unordered_map<std::string, boost::numeric::interval<double>> dom = {{"x", boost::numeric::interval<double>(exp.find("x")->second - domain_size, exp.find("x")->second + domain_size)},
+ *                  {"y", boost::numeric::interval<double>(exp.find("y")->second - domain_size, exp.find("y")->second + domain_size)}};
+ * audi::gdual<double> x(exp.find("x")->second, "x", order);
+ * audi::gdual<double> y(exp.find("y")->second, "y", order);
+ * audi::gdual<double> f_xy = x * y
+ * audi::taylor_model tm_xy(f_xy, rem, exp, dom);
+ * @endcode
+ * 
  * TODO: multiply() needs to be templated as well, but raises error with ambiguity.
+ * 
  * TODO: operator+ etc. need to become taylor_model_if_enabled (analogous to gdual_if_enabled) to specify exactly what
  * types the operators can accept
  */
