@@ -3,7 +3,11 @@
 set(_AUDI_BOOST_MINIMUM_VERSION 1.60.0)
 find_package(Boost ${_AUDI_BOOST_MINIMUM_VERSION} QUIET REQUIRED CONFIG)
 
-set(_AUDI_REQUIRED_BOOST_LIBS serialization timer chrono system)
+set(_AUDI_REQUIRED_BOOST_LIBS serialization timer chrono)
+
+if(Boost_VERSION_STRING VERSION_LESS "1.89.0")  # 1.89.0 → 108900
+    list(APPEND _AUDI_REQUIRED_BOOST_LIBS system)
+endif()
 
 # Add the unit test framework, if needed.
 if(_AUDI_FIND_BOOST_UNIT_TEST_FRAMEWORK)
