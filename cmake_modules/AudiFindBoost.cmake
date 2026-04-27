@@ -4,13 +4,9 @@ set(_AUDI_BOOST_MINIMUM_VERSION 1.60.0)
 find_package(Boost ${_AUDI_BOOST_MINIMUM_VERSION} QUIET REQUIRED CONFIG)
 
 set(_AUDI_REQUIRED_BOOST_LIBS serialization timer chrono)
-message(STATUS "[DEBUG] Required Boost libraries: ${_AUDI_REQUIRED_BOOST_LIBS}")
 
-# Add system only for older Boost
 if(Boost_VERSION_STRING VERSION_LESS "1.89.0")  # 1.89.0 → 108900
-    message(STATUS "[DEBUG2] Boost version: ${Boost_VERSION}")
     list(APPEND _AUDI_REQUIRED_BOOST_LIBS system)
-    message(STATUS "[DEBUG3] Required Boost libraries: ${_AUDI_REQUIRED_BOOST_LIBS}")
 endif()
 
 # Add the unit test framework, if needed.
