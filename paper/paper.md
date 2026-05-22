@@ -48,7 +48,7 @@ along with miscellaneous algorithms for applications in differential intelligenc
 providing rigorous bounds on truncation errors through associated Taylor models. These Taylor representations of program
 outputs can be used for fast Monte Carlo simulations, rigorous uncertainty analysis, local inversion of output–input
 relations, and high-order sensitivity studies. The package implements the high-order automatic differentiation methodology
-of Berz and Makino ([@berz2014introduction; @makino1998rigorous]), introducing novel implementation details in polynomial
+of Berz and Makino [@berz2014introduction; @makino1998rigorous], introducing novel implementation details in polynomial
 multiplication routines and Taylor model bounding.
 
 # Existing libraries with similar capabilities
@@ -85,7 +85,7 @@ The main features of `pyaudi` are:
 
 - **Taylor models with Bernstein polynomial bounding**, used to enclose the range of multivariate polynomials. 
   
-- **Map inversion algorithm**, implementing the method described in [@berz2014introduction]. 
+- **Map inversion algorithm**, implementing the method described in @berz2014introduction. 
   This feature enables the local inversion of input–output relations arising in generic computational graphs.
 
 # Ongoing research
@@ -94,10 +94,10 @@ The main features of `pyaudi` are:
 
 @acciarini2024stochastic extended the principle of numerical continuation to find solutions in non-linear
 dynamical systems in the space domain to the moments of a probability density function, using `pyaudi`
-to calculate the high-order derivatives in the Circular Restricted Three-Body Problem (CR3BP). Similarly, `pyaudi` was used in [@acciarini2025nonlinear]
+to calculate the high-order derivatives in the Circular Restricted Three-Body Problem (CR3BP). Similarly, `pyaudi` was used in @acciarini2025nonlinear
 for various test cases involving non-Gaussian uncertainty distributions to calculate the high-order derivatives.
 @caleb2020uncertainty did work on exploring Differential Algebra (DA) for accelerating Monte Carlo simulations,
-which is enabled by libraries such as `pyaudi`. For on-board applications, `pyaudi` was used in [@burnett2025rapid]
+which is enabled by libraries such as `pyaudi`. For on-board applications, `pyaudi` was used in @burnett2025rapid
 to implement convex guidance algorithms by describing the solutions using DA. @izzo2017differentiable
 explored Cartesian Genetic Programming and made it differentiable with high-order automatic differentiation,
 enabled by `pyaudi`.
