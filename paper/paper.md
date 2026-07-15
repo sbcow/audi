@@ -72,7 +72,7 @@ jet module [@bettencourt2019taylor] show promise, they remain immature.
 
 The main features of `pyaudi` are:
 
-- **Truncated polynomial algebra**, powered by [Obake](https://github.com/bluescarni/obake), 
+- **Truncated polynomial algebra**, powered by Obake [@obake2020biscani], 
   a C++ library for symbolic manipulation of sparse multivariate polynomials, truncated power series, and Poisson series. 
   Unlike other packages, which often suffer from severe memory bottlenecks as the polynomial order or the number of variables increases, 
   `pyaudi` avoids large static memory allocations by adopting a sparse, dynamic approach. This remains memory-efficient at the cost of additional bookkeeping, 
@@ -81,7 +81,7 @@ The main features of `pyaudi` are:
 
 - **Vectorized coefficients**, enabling the simultaneous evaluation of identical computational graphs 
   at multiple expansion points. This feature makes it possible to compute high-order derivatives on multiple points, 
-  while alleviating the overhead introduced by the sparse bookkeeping of [Obake](https://github.com/bluescarni/obake).
+  while alleviating the overhead introduced by the sparse bookkeeping of Obake [@obake2020biscani].
 
 - **Taylor models with Bernstein polynomial bounding**, used to enclose the range of multivariate polynomials. 
   
